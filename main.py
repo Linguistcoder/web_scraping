@@ -6,10 +6,20 @@ index = 0
 
 while con == 1:
     index += 1
-    URL = input("Insert URL: ")
-    session = HTMLSession()
-    r = session.get(URL)
-    r.html.render()
+
+    success = 0
+    while success == 0:
+        URL = input("Insert URL: ")
+        session = HTMLSession()
+
+        try:
+            r = session.get(URL)
+            r.html.render()
+            if r.status_code == 404:
+                raise Exception
+            success = 1
+        except:
+            print('Invalid URL. Please try again.')
 
     text = []
     soup = bs4.BeautifulSoup(r.html.html, "lxml")
@@ -29,9 +39,10 @@ while con == 1:
     with open(f'var/article_{index}.txt', 'w', encoding='utf8') as fout:
         for line in text:
             fout.write(line)
+        print('Scraped content to: ' + f'var/article_{index}.txt')
 
-    another = input("Do you want to get another article (y/n)? ")
+    another = input("\nDo you want to get another article (y/n)?")
+    print()
 
-    if another == 'n':
+    if another == 'n' or index >= 1000:
         con = 0
-
