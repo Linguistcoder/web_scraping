@@ -26,7 +26,7 @@ while con == 1:
     for p in body:
         text.append(p.text)
 
-    with open(f'article_{index}.txt', 'w', encoding='utf8') as fout:
+    with open(f'var/article_{index}.txt', 'w', encoding='utf8') as fout:
         for line in text:
             fout.write(line)
 
