@@ -24,21 +24,22 @@ while con == 1:
     text = []
     soup = bs4.BeautifulSoup(r.html.html, "lxml")
 
-    article = soup.body.find("div", id="content")
-    content = article.find("div", class_="vector-body")\
-        .find("div", class_="mw-body-content mw-content-ltr")\
-        .find("div", class_="mw-parser-output")
+    article = soup.body.find("section", class_="content").find("div", class_="wrap-c")
 
-    text.append(article.find("h1").text.strip())
+    text.append(article.find("h1").text)
+    text.append(article.find("p", class_="describe-article").text)
 
-    for element in content.contents:
-        text.append(element.text.strip())
+    content = article.find("div", class_="text-content single-news")
 
-    with open(f'var/wiki_{index}.txt', 'w', encoding='utf8') as fout:
+    body = content.find_all("p")
+
+    for p in body:
+        text.append(p.text)
+
+    with open(f'var/portal_article_{index}.txt', 'w', encoding='utf8') as fout:
         for line in text:
             fout.write('\n'+line)
-        print('Scraped content to: ' + f'var/wiki_{index}.txt')
+        print('Scraped content to: ' + f'var/portal_article_{index}.txt')
 
     con = 0 if input("\nDo you want to get another article (y/n)?") != 'y' else 1
     print()
-
