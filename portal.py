@@ -14,7 +14,7 @@ while con == 1:
 
         try:
             r = session.get(URL)
-            r.html.render()
+            r.html.render(timeout=30)
             if r.status_code == 404:
                 raise Exception
             success = 1
